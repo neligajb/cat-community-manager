@@ -1,0 +1,61 @@
+/* Normalize */
+/* ========= */
+body { width: 100%; height: 100%; overflow-x: hidden; margin: 0; }
+body * { box-sizing: border-box; }
+img { max-width: 100%; height: auto; }
+
+/* Browser Mixins */
+/* ============== */
+.transition(@transition) { -webkit-transition: @transition; -moz-transition: @transition;-ms-transition: @transition; -o-transition: @transition; }
+.transform(@string){ transform:@string; -webkit-transform: @string; -moz-transform: @string;-ms-transform: @string; -o-transform: @string; }
+.transform-origin(@string) { -webkit-transform-origin: @string; -moz-transform-origin: @string; -ms-transform-origin: @string; transform-origin: @string; }
+.browser-appearance(@string) { -webkit-appearance: @string; -moz-appearance: @string; appearance: @string; }
+.align-items(@string) { -webkit-align-items: @string; align-items: @string; }
+.justify-content(@string) { -webkit-justify-content: @string; justify-content: @string; }
+
+
+/* Color Variables */
+/* =============== */
+//@primary;
+//@link;
+@hover: #08036c;
+@button: #c7c9ee;
+//@input;
+
+
+/* Links & Inputs */
+/* ============== */
+a {	.transition(all 0.2s ease); text-decoration: none; color: inherit; cursor: pointer;
+  &:hover {	color: @hover; }
+}
+// class for links that should not use universal link styling (link blocks, etc)
+a.link-fix { color: inherit; text-decoration: none; }
+
+.button, button, input[type="submit"] {	background: @button; padding: 15px 25px; color: white; text-decoration: none; border: 0; .transition(all 0.2s ease); cursor: pointer; .browser-appearance(none); border-radius: 0;
+  &:hover {	color: white; background: @hover; }
+}
+
+/* ============================================================= */
+
+/* General Use */
+/* =========== */
+body {
+  font-family: Verdana, Geneva, sans-serif;
+}
+
+.flexbox {
+  display: -webkit-flex;
+  display: flex;
+}
+
+
+/* Site Content */
+/* ============ */
+.mid-content {
+  background-color: lightblue;
+  border-radius: 10px;
+  border: 5px solid lightgrey;
+  width: 90%;
+  margin: 40px auto;
+  padding: 20px 5%;
+}
