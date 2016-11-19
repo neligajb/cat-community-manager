@@ -2,6 +2,32 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var geocoderPackage = require('./geocoder.js');
+var db = require('mysql');
+
+var pool = db.createPool({
+	connectionLimit: 10,
+	host: 'localhost',
+	user: 'root',
+	password: 'kittycats',
+	database: 'cats',
+	multipleStatements: true
+});
+
+pool.on('connection', function(connection) {
+	connection.query('CREATE DATABASE IF NOT EXISTS cats;', function(err){
+		if(err) {
+			console.log(this.sql);
+			next(err);
+		};
+	});
+
+	connection.query('USE cats', function (err) {
+		if(err) {
+			console.log(this.sql);
+			next(err);
+		}
+	});
+});
 
 // the bodyParser package simplifies AJAX transactions
 app.use( bodyParser.json() );       // to support JSON-encoded bodies
@@ -38,7 +64,7 @@ app.post('/add-cat', function(req, res) {
 
 
 // getting cat object
-app.post('/get-cat', function(req, res) {
+app.get('/get-cat', function(req, res) {
 	var id = req.body.id;
 	// fetch the cat's full data using its ID
 	console.log('cat id: ' + id);
