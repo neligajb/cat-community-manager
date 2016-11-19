@@ -85,8 +85,14 @@ table thead {
 table thead tr {
   cursor: default;
 }
+table thead tr:hover {
+  background-color: darkseagreen;
+}
 table tr {
   cursor: pointer;
+}
+table tr:hover {
+  background-color: #b6ddea;
 }
 table td {
   padding: 5px;
