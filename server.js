@@ -9,13 +9,17 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 	extended: true
 }));
 
-
+// define static content directory
 app.use(express.static('public'));
+
 app.set('json spaces', 2);
 
+
+// index route
 app.get('/', function(req,res){
 	res.sendFile('./public/index.html');
 });
+
 
 // posting cat object
 app.post('/add-cat', function(req, res) {
@@ -49,11 +53,14 @@ app.post('/get-cat', function(req, res) {
 	});
 });
 
+
+// get the lat and long by sending the address to Google API
 function geocodeAddress(address, fn) {
 	geocoderPackage.geocoder.geocode(address, function(err, res) {
 		fn(res[0]);
 	});
 }
+
 
 app.listen(3000, function(){
 	console.log('App running on http://localhost:3000');
