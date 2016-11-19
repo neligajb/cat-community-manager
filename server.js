@@ -31,8 +31,8 @@ pool.on('connection', function(connection) {
 var createTables = function(){
 	pool.query('CREATE TABLE IF NOT EXISTS reports(' +
 						 'id INT NOT NULL AUTO_INCREMENT,' +
-						 'latitude INT(100),' +
-						 'longitude INT(100),' +
+						 'latitude DOUBLE,' +
+						 'longitude DOUBLE,' +
 						 'country VARCHAR(255),' +
 						 'countryCode VARCHAR(255),' +
 						 'city VARCHAR(255),' +
@@ -70,7 +70,7 @@ app.get('/', function(req,res){
 
 
 // posting cat object
-app.post('/add-cat', function(req, res) {
+app.post('/add-cat', function(req, res, next) {
 	var cat_object = req.body.cat;
 
 	// all code executed on the cat object must be run inside the Geocoding callback
@@ -79,8 +79,25 @@ app.post('/add-cat', function(req, res) {
 		console.log('lat: ' + location.latitude);
 		console.log('long: ' + location.longitude);
 
-		// response to the client
-		res.send('successfully posted a cat');
+		pool.query('INSERT INTO reports '
+							 + '(latitude, longitude, description, fixed, photoName)'
+							 + ' VALUES ('
+							 + location.latitude + ','
+							 + location.longitude + ','
+							 + "'" + cat_object.description + "'"  +','
+							 + "'" + cat_object.fixed + "'" + ','
+							 + "'" + cat_object.image + "'" +');'
+		, function(err, rows){
+			if(err) {
+				// Logging Error to console for failed insert query
+				console.log(this.sql);
+				res.send(err);
+				next(err);
+			} else {
+				// Success
+				res.send('successfully posted a cat');
+			}
+		});
 	});
 });
 
