@@ -5,17 +5,80 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
 
-	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
 
 <div class="mid-content">
-	<h1>Cat Community Manager</h1>
-	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+  <h1>Cat Community Manager</h1>
+
+  <div class="section">
+    <h2>Add a Cat</h2>
+    <form id="submit-cat">
+      <p>
+        <label for="address">Address</label>
+        <input type="text" name="address" id="address">
+      </p>
+      <p>
+        <label for="fixed">Spayed or Neutered?</label>
+        <input type="checkbox" name="fixed" id="fixed">
+      </p>
+      <p>
+        <label for="image">Image</label>
+        <input type="file" name="Image" id="image">
+      </p>
+      <p>
+        <label for="description">Description</label>
+        <textarea rows="3" name="description" id="description"></textarea>
+      </p>
+      <p>
+        <input type="submit" name="submit" value="Submit">
+      </p>
+    </form>
+  </div>
+
+  <div id="cat-table" class="section">
+    <h2>Reported Cats</h2>
+    <table>
+      <thead>
+        <tr>
+          <td>ID</td>
+          <td>Location</td>
+          <td>Spayed or Neutered?</td>
+          <td>Description</td>
+        </tr>
+      </thead>
+      <tr class="cat-row" data-id="1234">
+        <td>1234</td>
+        <td>1600 Pennsylvania Avenue</td>
+        <td>no</td>
+        <td>light gray coat</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="section" id="single-cat">
+    <button>Back</button>
+    <div class="container flexbox">
+      <div class="stats">
+        <h4 id="details-id">ID: </h4>
+        <h4 id="details-location">Location: </h4>
+        <h4 id="details-fixed">Spayed or Neutered?: </h4>
+      </div>
+      <div class="additional-info">
+        <div id="details-description" class="description">
+          <h4>Description:</h4>
+          <p></p>
+        </div>
+      </div>
+      <div id="details-image" class="wrapper"></div>
+    </div>
+  </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="js/general.js"></script>
 
 </body>
 </html>
