@@ -103,19 +103,20 @@ app.post('/add-cat', function(req, res, next) {
 
 
 // getting cat object
-app.get('/get-cat', function(req, res) {
+app.get('/get-cat', function(req, res, next) {
 	var id = req.body.id;
 	// fetch the cat's full data using its ID
 	console.log('cat id: ' + id);
 
-	res.send({
-		// dummy data
-		id: 1234,
-		location: '1600 Pennsylvania Avenue',
-		fixed: false,
-		description: 'light gray coat',
-		image: 'path to image file'
-	});
+	pool.query('SELECT * FROM reports;', function(err, rows){
+		if(err){
+			next(err);
+		} else {
+			if(rows[0] !== undefined){
+				res.json(rows);
+			}
+		}
+	})
 });
 
 
