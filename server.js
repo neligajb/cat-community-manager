@@ -9,7 +9,6 @@ var pool = db.createPool({
 	host: 'localhost',
 	user: 'root',
 	password: 'kittycats',
-	database: 'cats',
 	multipleStatements: true
 });
 
@@ -28,6 +27,29 @@ pool.on('connection', function(connection) {
 		}
 	});
 });
+
+var createTables = function(){
+	pool.query('CREATE TABLE IF NOT EXISTS reports(' +
+						 'id INT NOT NULL AUTO_INCREMENT,' +
+						 'latitude INT(100),' +
+						 'longitude INT(100),' +
+						 'country VARCHAR(255),' +
+						 'countryCode VARCHAR(255),' +
+						 'city VARCHAR(255),' +
+						 'zipcode INT(100),' +
+						 'streetName VARCHAR(255),' +
+						 'streetNumber INT(100),' +
+						 'photoName VARCHAR(255),' +
+						 'description VARCHAR(2000),' +
+						 'fixed VARCHAR(255),' +
+						 'PRIMARY KEY(id)'+
+						 ')ENGINE=INNODB;',
+		function(err){
+			if(err){console.log(this.sql); throw err;};
+	});
+};
+
+createTables();
 
 // the bodyParser package simplifies AJAX transactions
 app.use( bodyParser.json() );       // to support JSON-encoded bodies
