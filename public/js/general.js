@@ -35,11 +35,12 @@ $(document).ready(function() {
   $('tr.cat-row').click(function() {
     var id = $(this).attr('data-id');
 
-    // post to server
-    $.post(
-        'get-cat',  // post destination
+    // get from server
+    $.get(
+        'get-cat',  // get call
         {id: id}    // data
     ).done(function(res) {  // response callback
+      console.log(JSON.stringify(res)); // logging data as string to console to allow you to see what it looks like.
       var cat_object = res;
       console.log('Get cat response: ' + cat_object.id);
 

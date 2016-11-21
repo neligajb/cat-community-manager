@@ -2,6 +2,54 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var geocoderPackage = require('./geocoder.js');
+var db = require('mysql');
+
+var pool = db.createPool({
+	connectionLimit: 10,
+	host: 'localhost',
+	user: 'root',
+	password: 'kittycats',
+	multipleStatements: true
+});
+
+pool.on('connection', function(connection) {
+	connection.query('CREATE DATABASE IF NOT EXISTS cats;', function(err){
+		if(err) {
+			console.log(this.sql);
+			next(err);
+		};
+	});
+
+	connection.query('USE cats', function (err) {
+		if(err) {
+			console.log(this.sql);
+			next(err);
+		}
+	});
+});
+
+var createTables = function(){
+	pool.query('CREATE TABLE IF NOT EXISTS reports(' +
+						 'id INT NOT NULL AUTO_INCREMENT,' +
+						 'latitude DOUBLE,' +
+						 'longitude DOUBLE,' +
+						 'country VARCHAR(255),' +
+						 'countryCode VARCHAR(255),' +
+						 'city VARCHAR(255),' +
+						 'zipcode INT(100),' +
+						 'streetName VARCHAR(255),' +
+						 'streetNumber INT(100),' +
+						 'photoName VARCHAR(255),' +
+						 'description VARCHAR(2000),' +
+						 'fixed VARCHAR(255),' +
+						 'PRIMARY KEY(id)'+
+						 ')ENGINE=INNODB;',
+		function(err){
+			if(err){console.log(this.sql); throw err;};
+	});
+};
+
+createTables();
 
 // the bodyParser package simplifies AJAX transactions
 app.use( bodyParser.json() );       // to support JSON-encoded bodies
@@ -22,7 +70,7 @@ app.get('/', function(req,res){
 
 
 // posting cat object
-app.post('/add-cat', function(req, res) {
+app.post('/add-cat', function(req, res, next) {
 	var cat_object = req.body.cat;
 
 	// all code executed on the cat object must be run inside the Geocoding callback
@@ -31,26 +79,44 @@ app.post('/add-cat', function(req, res) {
 		console.log('lat: ' + location.latitude);
 		console.log('long: ' + location.longitude);
 
-		// response to the client
-		res.send('successfully posted a cat');
+		pool.query('INSERT INTO reports '
+							 + '(latitude, longitude, description, fixed, photoName)'
+							 + ' VALUES ('
+							 + location.latitude + ','
+							 + location.longitude + ','
+							 + "'" + cat_object.description + "'"  +','
+							 + "'" + cat_object.fixed + "'" + ','
+							 + "'" + cat_object.image + "'" +');'
+		, function(err, rows){
+			if(err) {
+				// Logging Error to console for failed insert query
+				console.log(this.sql);
+				res.send(err);
+				next(err);
+			} else {
+				// Success
+				res.send('successfully posted a cat');
+			}
+		});
 	});
 });
 
 
 // getting cat object
-app.post('/get-cat', function(req, res) {
+app.get('/get-cat', function(req, res, next) {
 	var id = req.body.id;
 	// fetch the cat's full data using its ID
 	console.log('cat id: ' + id);
 
-	res.send({
-		// dummy data
-		id: 1234,
-		location: '1600 Pennsylvania Avenue',
-		fixed: false,
-		description: 'light gray coat',
-		image: 'path to image file'
-	});
+	pool.query('SELECT * FROM reports;', function(err, rows){
+		if(err){
+			next(err);
+		} else {
+			if(rows[0] !== undefined){
+				res.json(rows);
+			}
+		}
+	})
 });
 
 
