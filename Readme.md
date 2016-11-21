@@ -1,9 +1,11 @@
 # Cat Community Manager
 
-Prior to running the app, you now need to have MySQL running on your local machine, and it needs to be responding at port 3306 (default MySQL port). If you're unfamiliar with running MySQL on your local system, please see the following links:
+Prior to running the app, you now need to have MySQL running on your local machine, and it needs to be responding at port 3306 (default MySQL port). If you're unfamiliar with running MySQL on your local system, please see the following link:
+
 http://dev.mysql.com/doc/mysql-getting-started/en/
 
 You can also run it locally using Docker (my preferred method):
+
 https://www.docker.com/products/docker
 https://kitematic.com/
 
