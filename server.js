@@ -28,6 +28,9 @@ pool.on('connection', function(connection) {
 	});
 });
 
+//need to export server for testing with mocha-chai framework
+module.exports = app; 
+
 var createTables = function(){
 	pool.query('CREATE TABLE IF NOT EXISTS reports(' +
 						 'id INT NOT NULL AUTO_INCREMENT,' +
@@ -52,7 +55,7 @@ var createTables = function(){
 createTables();
 
 // the bodyParser package simplifies AJAX transactions
-app.use( bodyParser.json() );       // to support JSON-encoded bodies
+app.use(bodyParser.json() );       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 	extended: true
 }));
@@ -96,6 +99,7 @@ app.post('/add-cat', function(req, res, next) {
 			} else {
 				// Success
 				res.send('successfully posted a cat');
+				res.sendStatus(200);
 			}
 		});
 	});
