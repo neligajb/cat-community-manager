@@ -34,3 +34,11 @@ To get the server running, simply run the command:
 `npm start`
 
 This should get the server running on http://localhost:3000 (we will adjust that for product purposes, but for now this is how to run and test it in development).
+
+# Unit Testing
+
+To perform unit tests using the Mocha framework, run the command on the unit test file(s) found in the test directory:
+
+`mocha {test file}`
+
+Tests have been implemented to check the GET and POST routes.
