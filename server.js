@@ -3,12 +3,13 @@ var app = express();
 var bodyParser = require('body-parser');
 var geocoderPackage = require('./geocoder.js');
 var db = require('mysql');
+var dbCreds = require('./db-creds.js');
 
 var pool = db.createPool({
 	connectionLimit: 10,
-	host: 'localhost',
-	user: 'root',
-	password: 'kittycats',
+	host: dbCreds.getHost(),
+	user: dbCreds.getUser(),
+	password: dbCreds.getPassword(),
 	multipleStatements: true
 });
 
@@ -17,7 +18,7 @@ pool.on('connection', function(connection) {
 		if(err) {
 			console.log(this.sql);
 			next(err);
-		};
+		}
 	});
 
 	connection.query('USE cats', function (err) {
