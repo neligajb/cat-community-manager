@@ -1,9 +1,11 @@
-var express = require('express');
-var app = express();
-var bodyParser = require('body-parser');
-var geocoderPackage = require('./geocoder.js');
-var db = require('mysql');
-var dbCreds = require('./db-creds.js');
+var express = require('express'),
+		logger = require('morgan'),
+		app = express(),
+		bodyParser = require('body-parser'),
+		geocoderPackage = require('./geocoder.js'),
+		db = require('mysql');
+    dbCreds = require('./db-creds.js');
+
 
 var pool = db.createPool({
 	connectionLimit: 10,
@@ -59,14 +61,14 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 }));
 
 // define static content directory
+app.use(logger('combined'));
 app.use(express.static('public'));
-
 app.set('json spaces', 2);
 
 
 // index route
 app.get('/', function(req,res){
-	res.sendFile('./public/index.html');
+	res.status(200).sendFile('./public/index.html');
 });
 
 
