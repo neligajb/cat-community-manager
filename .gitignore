@@ -1,2 +1,4 @@
 node_modules
 .idea
+db-creds.js
+npm-debug.log
