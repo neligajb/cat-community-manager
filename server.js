@@ -1,18 +1,11 @@
-<<<<<<< HEAD
 var express = require('express'),
 		logger = require('morgan'),
 		app = express(),
 		bodyParser = require('body-parser'),
 		geocoderPackage = require('./geocoder.js'),
 		db = require('mysql');
-=======
-var express = require('express');
-var app = express();
-var bodyParser = require('body-parser');
-var geocoderPackage = require('./geocoder.js');
-var db = require('mysql');
-var dbCreds = require('./db-creds.js');
->>>>>>> master
+    dbCreds = require('./db-creds.js');
+
 
 var pool = db.createPool({
 	connectionLimit: 10,
