@@ -81,12 +81,25 @@ app.post('/add-cat', function(req, res, next) {
 	geocodeAddress(cat_object.address, function(location) {
 		console.log('lat: ' + location.latitude);
 		console.log('long: ' + location.longitude);
+		console.log('streetName: ' + location.streetName);
+		console.log('streetNumber: ' + location.streetNumber);
+		console.log('city: ' + location.city);
+		console.log('country: ' + location.country);
+		console.log('countryCode: ' + location.countryCode);
+
+
 
 		pool.query('INSERT INTO reports '
-							 + '(latitude, longitude, description, fixed, photoName)'
+							 + '(latitude, longitude, country, countryCode, city, zipcode, streetName, streetNumber, description, fixed, photoName)'
 							 + ' VALUES ('
 							 + location.latitude + ','
 							 + location.longitude + ','
+				       + "'" + location.country + "'" + ','
+				       + "'" + location.countryCode + "'" + ','
+				       + "'" + location.city + "'" + ','
+				       + location.zipcode + ','
+				       + "'" + location.streetName + "'" + ','
+				       + location.streetNumber + ','
 							 + "'" + cat_object.description + "'"  +','
 							 + "'" + cat_object.fixed + "'" + ','
 							 + "'" + cat_object.image + "'" +');'
@@ -107,19 +120,37 @@ app.post('/add-cat', function(req, res, next) {
 
 // getting cat object
 app.get('/get-cat', function(req, res, next) {
-	var id = req.body.id;
+	console.log(req.query);
+	var id = req.query.id;
+
 	// fetch the cat's full data using its ID
 	console.log('cat id: ' + id);
 
-	pool.query('SELECT * FROM reports;', function(err, rows){
-		if(err){
-			next(err);
-		} else {
-			if(rows[0] !== undefined){
-				res.json(rows);
+	if (id !== undefined) {
+		console.log('here1');
+		pool.query('SELECT * FROM reports WHERE id = ' + id + ';', function(err, rows){
+			if(err){
+				next(err);
+			} else {
+				if(rows[0] !== undefined){
+					res.json(rows);
+				}
 			}
-		}
-	})
+		});
+	}
+	else {
+		console.log('here2');
+		pool.query('SELECT * FROM reports;', function(err, rows){
+			if(err){
+				next(err);
+			} else {
+				if(rows[0] !== undefined){
+					res.json(rows);
+				}
+			}
+		});
+	}
+
 });
 
 
