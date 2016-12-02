@@ -79,15 +79,11 @@ app.post('/add-cat', function(req, res, next) {
 	// all code executed on the cat object must be run inside the Geocoding callback
 	// to ensure that we have receieved the coordinates from the Google API
 	geocodeAddress(cat_object.address, function(location) {
-		console.log('lat: ' + location.latitude);
-		console.log('long: ' + location.longitude);
-		console.log('streetName: ' + location.streetName);
-		console.log('streetNumber: ' + location.streetNumber);
-		console.log('city: ' + location.city);
-		console.log('country: ' + location.country);
-		console.log('countryCode: ' + location.countryCode);
-
-
+    console.log(location);
+    if (location === undefined) {
+      res.send('could not find address');
+      return;
+    }
 
 		pool.query('INSERT INTO reports '
 							 + '(latitude, longitude, country, countryCode, city, zipcode, streetName, streetNumber, description, fixed, photoName)'
@@ -111,7 +107,7 @@ app.post('/add-cat', function(req, res, next) {
 				next(err);
 			} else {
 				// Success
-				res.send('successfully posted a cat');
+				res.send('cat added');
 			}
 		});
 	});
@@ -120,14 +116,9 @@ app.post('/add-cat', function(req, res, next) {
 
 // getting cat object
 app.get('/get-cat', function(req, res, next) {
-	console.log(req.query);
 	var id = req.query.id;
 
-	// fetch the cat's full data using its ID
-	console.log('cat id: ' + id);
-
 	if (id !== undefined) {
-		console.log('here1');
 		pool.query('SELECT * FROM reports WHERE id = ' + id + ';', function(err, rows){
 			if(err){
 				next(err);
@@ -139,7 +130,6 @@ app.get('/get-cat', function(req, res, next) {
 		});
 	}
 	else {
-		console.log('here2');
 		pool.query('SELECT * FROM reports;', function(err, rows){
 			if(err){
 				next(err);
@@ -163,5 +153,5 @@ function geocodeAddress(address, fn) {
 
 
 app.listen(3000, function(){
-	console.log('App running on http://localhost:3000');
+	console.log('App running on port 3000');
 });
