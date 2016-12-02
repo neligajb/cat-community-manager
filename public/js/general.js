@@ -56,7 +56,7 @@ function postCat() {
     console.log(res);
 
     if (res == 'could not find address') {
-      alert('Unable to geolocate. Please check the address.')
+      alert('Unable to geolocate. Please check the address.');
       return;
     }
     if (res == 'cat added') {
@@ -71,7 +71,7 @@ function postCat() {
         '<td>' + fixed + '</td>' +
         '<td>' + description + '</td>' +
         '</tr>';
-    $('#cat-table table').append(html);
+    $('#cat-table').find('table').append(html);
   })
 }
 
@@ -93,7 +93,7 @@ function getCat() {
     $('#details-id').append('<span>' + cat_object.id + '</span>');
     $('#details-location').append('<span>' + address + '</span>');
     $('#details-fixed').append('<span>' + fixed + '</span>');
-    $('#details-description > p').append('<span>' + cat_object.description + '</span>');
+    $('#details-description').find('p').append('<span>' + cat_object.description + '</span>');
     $('#details-image').append('<span>' + cat_object.photoName + '</span>');
 
     // fade out the cats table div
