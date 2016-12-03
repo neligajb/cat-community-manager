@@ -7,9 +7,6 @@ var express = require('express'),
 		db = require('mysql');
     dbCreds = require('./db-creds.js');
 
-// the express-formidable handles multi-type AJAX transactions
-app.use(formidable());
-
 var pool = db.createPool({
 	connectionLimit: 10,
 	host: dbCreds.getHost(),
@@ -57,6 +54,9 @@ var createTables = function(){
 
 createTables();
 
+// the express-formidable handles multi-type AJAX transactions
+app.use(formidable());
+
 // define static content directory
 app.use(logger('combined'));
 app.use(express.static('public'));
@@ -65,7 +65,7 @@ app.set('json spaces', 2);
 
 // index route
 app.get('/', function(req,res){
-	res.status(200).sendFile('./public/index.html');
+	res.status(200).sendFile(__dirname + '/public/index.html');
 });
 
 
@@ -82,7 +82,7 @@ app.post('/add-cat', function(req, res, next) {
 	geocodeAddress(cat_object.address, function(location) {
     console.log(location);
     if (location === undefined) {
-      res.send('could not find address');
+      res.send({message: 'could not find address'});
       return;
     }
 
@@ -108,7 +108,8 @@ app.post('/add-cat', function(req, res, next) {
 				next(err);
 			} else {
 				// Success
-				res.send('cat added');
+				console.log('meaaaa');
+				res.send({message: 'cat added'});
 			}
 		});
 	});

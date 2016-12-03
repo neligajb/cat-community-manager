@@ -57,11 +57,11 @@ function postCat(e) {
   }).done(function(res) {
     console.log(res);
 
-    if (res == 'could not find address') {
+    if (res.message == 'could not find address') {
       alert('Unable to geolocate. Please check the address.');
       return;
     }
-    if (res == 'cat added') {
+    if (res.message == 'cat added') {
       alert('Cat added.')
     }
 
