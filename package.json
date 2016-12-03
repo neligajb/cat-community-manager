@@ -17,7 +17,6 @@
   },
   "homepage": "https://github.com/neligajb/cat-community-manager#readme",
   "dependencies": {
-    "body-parser": "^1.15.2",
     "express": "^4.14.0",
     "express-formidable": "^1.0.0",
     "fs-extra": "^1.0.0",
