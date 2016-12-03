@@ -15,7 +15,7 @@
 
   <div class="section">
     <h2>Add a Cat</h2>
-    <form id="submit-cat">
+    <form id="submit-cat" method="post" enctype="multipart/form-data">
       <p>
         <label for="address">Address</label>
         <input type="text" name="address" id="address">
@@ -33,7 +33,7 @@
         <textarea rows="3" name="description" id="description"></textarea>
       </p>
       <p>
-        <input type="submit" name="submit" value="Submit">
+        <button>Submit</button>
       </p>
     </form>
   </div>

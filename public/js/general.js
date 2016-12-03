@@ -1,8 +1,8 @@
 $(document).ready(function() {
 
   // adding a cat
-  $('#submit-cat').submit(function(event) {
-    event.preventDefault();  // prevent default because AJAX
+  $('#submit-cat').submit(function(e) {
+    e.preventDefault();
     postCat();
   });
 
@@ -31,28 +31,30 @@ $(document).on('click', 'tr.new-cat-row', function() {
 });
 
 
-function postCat() {
+function postCat(e) {
   // collect form data
   var address = $('#address').val();
   var fixed = $('#fixed').is(':checked');
-  var image = $('#image').val();
+  var image_file = document.getElementById('image').files[0];
   var description = $('#description').val();
 
-  // create cat object
-  var cat_object = {
-    cat: {
-      address: address,
-      fixed: fixed,
-      image: image,
-      description: description
-    }
-  };
+  var form_data = new FormData();
+
+  form_data.append('address', address);
+  form_data.append('fixed', fixed);
+  form_data.append('image', image_file);
+  form_data.append('description', description);
 
   // post to server
-  $.post(
-    'add-cat',  // post destination
-    cat_object  // data
-  ).done(function(res) {  // response callback
+  $.ajax({
+    url: 'add-cat',
+    type: 'POST',
+    data: form_data,
+    cache: false,
+    dataType: 'json',
+    contentType: false,
+    processData: false
+  }).done(function(res) {
     console.log(res);
 
     if (res == 'could not find address') {
@@ -94,7 +96,7 @@ function getCat() {
     $('#details-location').append('<span>' + address + '</span>');
     $('#details-fixed').append('<span>' + fixed + '</span>');
     $('#details-description').find('p').append('<span>' + cat_object.description + '</span>');
-    $('#details-image').append('<span>' + cat_object.photoName + '</span>');
+    $('#details-image').append('<span><img src="' + cat_object.photoName + '" alt="photo"></span>');
 
     // fade out the cats table div
     $('#cat-table').fadeOut(function() {

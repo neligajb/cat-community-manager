@@ -1,11 +1,14 @@
 var express = require('express'),
 		logger = require('morgan'),
 		app = express(),
-		bodyParser = require('body-parser'),
 		geocoderPackage = require('./geocoder.js'),
+		formidable = require('express-formidable'),
+		fs = require('fs-extra'),
 		db = require('mysql');
     dbCreds = require('./db-creds.js');
 
+// the express-formidable handles multi-type AJAX transactions
+app.use(formidable());
 
 var pool = db.createPool({
 	connectionLimit: 10,
@@ -54,12 +57,6 @@ var createTables = function(){
 
 createTables();
 
-// the bodyParser package simplifies AJAX transactions
-app.use( bodyParser.json() );       // to support JSON-encoded bodies
-app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
-	extended: true
-}));
-
 // define static content directory
 app.use(logger('combined'));
 app.use(express.static('public'));
@@ -74,7 +71,11 @@ app.get('/', function(req,res){
 
 // posting cat object
 app.post('/add-cat', function(req, res, next) {
-	var cat_object = req.body.cat;
+	var cat_object = req.fields;
+	var image_path = req.files.image.path;
+	var image_name = req.files.image.name;
+
+	processImage(image_path, image_name);
 
 	// all code executed on the cat object must be run inside the Geocoding callback
 	// to ensure that we have receieved the coordinates from the Google API
@@ -98,7 +99,7 @@ app.post('/add-cat', function(req, res, next) {
 				       + location.streetNumber + ','
 							 + "'" + cat_object.description + "'"  +','
 							 + "'" + cat_object.fixed + "'" + ','
-							 + "'" + cat_object.image + "'" +');'
+							 + "'/uploads/" + image_name + "'" +');'
 		, function(err, rows){
 			if(err) {
 				// Logging Error to console for failed insert query
@@ -142,6 +143,20 @@ app.get('/get-cat', function(req, res, next) {
 	}
 
 });
+
+
+// process the image file
+function processImage(path, name) {
+	var new_location = 'public/uploads/';
+
+	fs.copy(path, new_location + name, function(err) {
+		if (err) {
+			console.error(err);
+		} else {
+			console.log("success!")
+		}
+	});
+}
 
 
 // get the lat and long by sending the address to Google API
