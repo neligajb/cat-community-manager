@@ -141,5 +141,9 @@ table td {
 }
 #single-cat #details-image {
   width: 40%;
+  text-align: center;
+}
+#single-cat #details-image img {
   border: 1px solid black;
+  padding: 5px;
 }
