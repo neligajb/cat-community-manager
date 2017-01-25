@@ -59,9 +59,12 @@ app.use(formidable());
 
 // define static content directory
 app.use(logger('combined'));
-app.use(express.static('public'));
+app.use(express.static(__dirname + '/public'));
 app.set('json spaces', 2);
 
+// GET /style.css, general.js, etc
+app.use('/css', express.static(__dirname + '/public'));
+app.use('/js', express.static(__dirname + '/public'));
 
 // index route
 app.get('/', function(req,res){
@@ -168,6 +171,6 @@ function geocodeAddress(address, fn) {
 }
 
 
-app.listen(3000, function(){
-	console.log('App running on port 3000');
+app.listen(8080, function(){
+	console.log('App running on port 8080');
 });
