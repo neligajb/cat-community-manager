@@ -2,9 +2,10 @@
   "name": "cat-community-manager",
   "version": "0.0.1",
   "description": "A project for CS 344 Group 13",
-  "main": "server.js",
+  "main": "server-cats.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server-cats.js"
   },
   "repository": {
     "type": "git",
