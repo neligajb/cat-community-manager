@@ -3,3 +3,4 @@ node_modules
 db-creds.js
 npm-debug.log
 uploads
+.DS_Store
